@@ -1,0 +1,39 @@
+{
+  "id": "5f682237-fc56-4ad4-bcf4-a068896ba509",
+  "name": "Mearge Reports",
+  "publisher": "Pranav",
+  "version": "1.0.0.4",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "d61670c9-36e7-4237-8e17-8b0bdde5940e",
+      "name": "PDF Attachments Merge",
+      "publisher": "BCILITY",
+      "version": "24.10.1.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50300,
+      "to": 50310
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

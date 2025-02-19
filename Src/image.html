@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 to PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h2>Convert Base64 Image to PDF</h2>
+    <textarea id="base64Input" rows="5" cols="50" placeholder="Paste your Base64 image data here..."></textarea>
+    <br>
+    <button onclick="convertToPDF()">Download PDF</button>
+
+    <script>
+        function convertToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let base64String = document.getElementById("base64Input").value.trim();
+
+            // Extract format from Base64 string
+            let formatMatch = base64String.match(/^data:image\/(png|jpeg|jpg|gif);base64,/);
+            if (!formatMatch) {
+                alert("Invalid Base64 image data! Ensure it starts with 'data:image/png;base64,' or similar.");
+                return;
+            }
+
+            let format = formatMatch[1].toUpperCase();
+            if (format === "JPG") format = "JPEG"; // Normalize JPG to JPEG
+
+            doc.addImage(base64String, format, 10, 10, 180, 150);
+            doc.save("download.pdf");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World</title>
+    <script type="text/javascript" src="Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script type="text/javascript" src="Resources/dynamsoft.webtwain.config.js"></script>
+</head>
+<body>
+    <!-- Only the Scan button is shown -->
+    <input type="button" value="Scan" onclick="AcquireImage();" />
+    <div id="dwtcontrolContainer" style="width: 350px; height: 380px;"></div>
+    <div style="margin-top: 30px; letter-spacing: 0px; color: #323234; font-size: 14px;">
+        <div style="font: normal normal 600 14px/27px Open Sans;">About:</div>
+        <div style="font: normal normal normal 14px/24px Open Sans;">
+            This sample uses the Core Module of Dynamic Web TWAIN.
+        </div>
+        <div style="margin-top: 10px; font: normal normal 600 14px/27px Open Sans;">Learn More:</div>
+        <div style="font: normal normal normal 14px/28px Open Sans; color: #FE8E14;">
+            <a style="color: #FE8E14; text-decoration: none;" target="_blank" 
+               href="https://www.dynamsoft.com/web-twain/docs/faq/download-virtual-scanner-for-testing.html?product=dwt&utm_source=installer">
+               Download virtual scanner for testing &gt;
+            </a><br/>
+            <a style="color: #FE8E14; text-decoration: none;" target="_blank" 
+               href="https://www.dynamsoft.com/web-twain/docs/indepth/features/initialize.html#dynamsoftdwtload?product=dwt&utm_source=installer">
+               How to initialize Dynamic Web TWAIN instance on demand &gt;
+            </a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var DWTObject;
+        // Register event to initialize the Dynamic Web TWAIN object
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer');
+        }); 
+
+        // Acquire image from scanner
+        function AcquireImage() {
+            if (DWTObject) {
+                DWTObject.SelectSourceAsync()
+                    .then(function(){
+                        return DWTObject.AcquireImageAsync({
+                            IfCloseSourceAfterAcquire: true 
+                        });
+                    })
+                    .then(function() {
+                        // After successful scan, automatically trigger the download process
+                        DownloadPDF();
+                    })
+                    .catch(function (exp) {
+                        alert(exp.message);
+                    });
+            }
+        }
+
+        // Save all scanned images as a PDF file automatically
+        function DownloadPDF() {
+            if (DWTObject) {
+                if (DWTObject.HowManyImagesInBuffer > 0) {
+                    DWTObject.SaveAllAsPDF("D:/BLOG/ScannedDocument.pdf", 
+                        function(){
+                            alert("PDF downloaded successfully.");
+                        }, 
+                        function(errorCode, errorString){
+                            alert("Error: " + errorString);
+                        }
+                    );
+                } else {
+                    alert("No scanned image to download.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

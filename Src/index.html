@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Image to PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Convert Base64 Image to PDF</h2>
+    <textarea id="base64Input" placeholder="Paste your Base64 image here..."></textarea>
+    <br>
+    <button onclick="convertToPDF()">Convert to PDF</button>
+    <br>
+    <textarea id="pdfBase64Output" placeholder="Base64 PDF output will appear here..." readonly></textarea>
+    
+    <script>
+        async function convertToPDF() {
+            const { jsPDF } = window.jspdf;
+            let base64Image = document.getElementById("base64Input").value.trim();
+            
+            // Auto-detect MIME type
+            let format;
+            if (base64Image.startsWith("data:image/")) {
+                format = base64Image.split(';')[0].split('/')[1].toUpperCase();
+            } else {
+                // Assume PNG if MIME type is missing
+                format = "PNG";
+                base64Image = "data:image/png;base64," + base64Image;
+            }
+
+            if (format === "JPEG") format = "JPG"; // Normalize format for jsPDF
+
+            try {
+                let pdf = new jsPDF();
+                let imgProps = pdf.getImageProperties(base64Image);
+                let pdfWidth = pdf.internal.pageSize.getWidth();
+                let pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(base64Image, format, 0, 0, pdfWidth, pdfHeight);
+                
+                let pdfBase64 = pdf.output('datauristring');
+                document.getElementById("pdfBase64Output").value = pdfBase64.split(',')[1]; // Extract base64 only
+                
+                // Download PDF
+                pdf.save("converted.pdf");
+            } catch (error) {
+                alert("Error converting image to PDF. Ensure it is a valid Base64 image.");
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

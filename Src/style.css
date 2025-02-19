@@ -1,0 +1,46 @@
+/* Style for the main container */
+#controlAddIn {
+  padding: 20px;
+  margin-top: 30px;
+}
+
+/* Style for the download button */
+#downloadButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#downloadButton:hover {
+  background-color: #005a9e;
+}
+
+/* Style for the PDF labels */
+h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* Make the PDF image responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure responsive behavior */
+@media screen and (max-width: 768px) {
+  #downloadButton {
+    width: 100%;
+    padding: 12px;
+  }
+  img {
+    max-width: 90%;
+  }
+}
